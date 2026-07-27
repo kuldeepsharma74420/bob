@@ -1,0 +1,595 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bob Features — Session Report</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 32px 16px 48px;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* Header */
+  .report-header {
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 20px;
+    margin-bottom: 32px;
+  }
+  .report-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2328;
+    margin-bottom: 6px;
+  }
+  .report-header .meta {
+    color: #57606a;
+    font-size: 13px;
+  }
+  .badge {
+    display: inline-block;
+    background: #f0f6ff;
+    color: #3b82d4;
+    border: 1px solid #c8dffe;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  /* TOC */
+  .toc {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+  }
+  .toc h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #57606a; margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 4px; font-size: 13px; color: #1f2328; }
+  .toc li span { color: #57606a; }
+
+  /* Sections */
+  .section {
+    margin-bottom: 36px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: #f7f8fa;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-number {
+    background: #3b82d4;
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .section-header h2 { font-size: 15px; font-weight: 600; color: #1f2328; }
+  .section-body { padding: 18px 20px; }
+  .question {
+    background: #f0f6ff;
+    border-left: 3px solid #3b82d4;
+    padding: 8px 12px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: #1f2328;
+    font-style: italic;
+  }
+  .section-body p { margin-bottom: 10px; color: #1f2328; }
+  .section-body ul, .section-body ol { padding-left: 20px; margin-bottom: 10px; }
+  .section-body li { margin-bottom: 4px; }
+  .section-body h3 { font-size: 13px; font-weight: 600; color: #1f2328; margin: 14px 0 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 13px; }
+  th { background: #f7f8fa; color: #57606a; font-weight: 600; text-align: left; padding: 8px 12px; border: 1px solid #e5e7eb; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { padding: 7px 12px; border: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  code { background: #f0f1f3; border: 1px solid #e5e7eb; border-radius: 3px; padding: 1px 5px; font-family: "Consolas", "Menlo", monospace; font-size: 12px; color: #c7254e; }
+
+  /* Code blocks */
+  pre {
+    background: #1f2328;
+    color: #e6edf3;
+    border-radius: 6px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: "Consolas", "Menlo", monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  /* Tag pills */
+  .tag { display: inline-block; background: #f0fff4; color: #2da44e; border: 1px solid #b4efca; border-radius: 4px; padding: 1px 7px; font-size: 11px; font-weight: 600; margin: 2px 2px; }
+  .tag.red { background: #fff0f0; color: #cf222e; border-color: #ffcdd2; }
+  .tag.blue { background: #f0f6ff; color: #3b82d4; border-color: #c8dffe; }
+  .tag.purple { background: #f8f0ff; color: #7c5cd8; border-color: #ddc8fe; }
+
+  /* Created items */
+  .created-box {
+    background: #f0fff4;
+    border: 1px solid #b4efca;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .created-box strong { color: #2da44e; }
+
+  /* Summary grid */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .feature-card {
+    background: #f7f8fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .feature-card .fc-title { font-weight: 600; font-size: 13px; color: #1f2328; margin-bottom: 4px; }
+  .feature-card .fc-desc { font-size: 12px; color: #57606a; }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+    font-size: 12px;
+    color: #57606a;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  
+  <div class="report-header">
+    <div style="margin-bottom:10px">
+      <span class="badge">Session Report</span>
+      <span class="badge" style="background:#f8f0ff;color:#7c5cd8;border-color:#ddc8fe">Bob Features</span>
+    </div>
+    <h1>Bob Features &amp; Capabilities — Deep Dive</h1>
+    <div class="meta">15 topics covered  |  Custom mode created  |  MCP server configured  |  Skill created</div>
+  </div>
+
+  
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li>Modes <span>— Plan, Agent, Ask</span></li>
+      <li>Permissions (Groups) Feature</li>
+      <li>Purpose of Custom Modes</li>
+      <li>DevOps Engineer Custom Mode <span>— Created</span></li>
+      <li>How to Create a Custom Mode Manually</li>
+      <li>MCP Tools <span>— Model Context Protocol</span></li>
+      <li>AWS RDS MCP Server <span>— Configured</span></li>
+      <li>Skills — <code>use_skill</code></li>
+      <li>k8s-deploy Skill <span>— Created</span></li>
+      <li>Todo List — <code>update_todo_list</code></li>
+      <li>Subtasks — <code>start_subtask</code></li>
+      <li>Subagents — <code>spawn_subagent</code></li>
+      <li>Mode Switching — <code>switch_mode</code></li>
+      <li>Bob Findings</li>
+      <li>Complete Feature Map</li>
+    </ol>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Modes</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: How many modes do you have?</div>
+      <p>Bob has <strong>3 built-in modes</strong>, each optimized for a specific type of task:</p>
+      <table>
+        <tr><th>Mode</th><th>Best For</th><th>Tool Access</th></tr>
+        <tr><td><strong>Plan</strong></td><td>Planning, designing, strategizing before implementation</td><td>Read + limited write (.md/.txt)</td></tr>
+        <tr><td><strong>Agent</strong></td><td>Writing, modifying, refactoring code</td><td>Full — read, write, execute</td></tr>
+        <tr><td><strong>Ask</strong></td><td>Explanations, documentation, answering questions</td><td>Read only</td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Permissions (Groups) Feature</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the permissions feature and how to use it?</div>
+      <p>When creating a custom mode, you control what it can do using <strong>permission groups</strong> in the <code>groups</code> field of the YAML config.</p>
+      <table>
+        <tr><th>Group</th><th>What It Allows</th></tr>
+        <tr><td><code>read</code></td><td>Reading files and looking up code symbols</td></tr>
+        <tr><td><code>edit</code></td><td>Writing and modifying files</td></tr>
+        <tr><td><code>execute</code></td><td>Running shell commands</td></tr>
+        <tr><td><code>mcp</code></td><td>Using MCP server tools</td></tr>
+        <tr><td><code>skill</code></td><td>Using the use_skill tool</td></tr>
+        <tr><td><code>todo</code></td><td>Using the update_todo_list tool</td></tr>
+        <tr><td><code>subagent</code></td><td>Using the spawn_subagent tool</td></tr>
+        <tr><td><code>mode</code></td><td>Using the switch_mode tool</td></tr>
+      </table>
+      <h3>Key Rules</h3>
+      <ul>
+        <li>Omitting <code>groups</code> gives the mode <strong>NO tool access</strong></li>
+        <li>Use exact group names — typos silently grant nothing</li>
+        <li>No duplicate group names — duplicates drop the entire file</li>
+        <li>Restrict editing to specific file types using <code>fileRegex</code></li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Purpose of Custom Modes</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: Why do we need to create custom modes?</div>
+      <ol>
+        <li><strong>Focused Behavior / Persona</strong> — Each mode has its own <code>roleDefinition</code> (e.g. Security Reviewer, Docs Writer, DevOps Engineer)</li>
+        <li><strong>Controlled Tool Access</strong> — Restrict what Bob can do (read-only, docs-only, no-shell)</li>
+        <li><strong>Context Switching</strong> — Different tasks need different mindsets</li>
+        <li><strong>Team / Project Standardization</strong> — Workspace-scoped modes can be committed to version control</li>
+        <li><strong>Custom Instructions Per Mode</strong> — Each mode can enforce project-specific conventions</li>
+      </ol>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>DevOps Engineer Custom Mode</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: Can we create a custom mode for deploying applications in Kubernetes?</div>
+      <p>Yes! A DevOps Engineer mode was created globally.</p>
+      <pre>customModes:
+  - slug: devops-engineer
+    name: DevOps Engineer
+    roleDefinition: &gt;-
+      You are an experienced DevOps engineer specializing in
+      Kubernetes, Docker, Helm, and CI/CD pipelines.
+    groups:
+      - read
+      - edit
+      - execute
+      - mcp</pre>
+      <div class="created-box">
+        <strong>Created:</strong> <code>~/.bob/settings/custom_modes.yaml</code> — Global scope, available in all workspaces
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>How to Create a Custom Mode Manually</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: Can I create the mode manually? Give the steps.</div>
+      <ol>
+        <li><strong>Decide the Scope</strong> — Global (<code>~/.bob/settings/custom_modes.yaml</code>) or Workspace (<code>.bob/custom_modes.yaml</code>)</li>
+        <li><strong>Open or Create the File</strong> — Navigate to the file path</li>
+        <li><strong>Write Your Mode Entry</strong> — Use the YAML template with <code>slug</code>, <code>name</code>, <code>roleDefinition</code>, <code>groups</code></li>
+        <li><strong>Choose Permission Groups</strong> — Only include what the mode actually needs</li>
+        <li><strong>Optionally Restrict File Editing</strong> — Use <code>fileRegex</code></li>
+        <li><strong>Ensure Slug is Unique</strong> — Letters, numbers, dashes only</li>
+        <li><strong>Append to Existing File</strong> — Never overwrite</li>
+        <li><strong>Save the File</strong> — Hot-reloads automatically</li>
+      </ol>
+      <h3>Common Mistakes</h3>
+      <table>
+        <tr><th>Mistake</th><th>Result</th></tr>
+        <tr><td>Duplicate slug</td><td>Entire file is dropped</td></tr>
+        <tr><td>Wrong group name (write, command)</td><td>Silently grants nothing</td></tr>
+        <tr><td>Invalid fileRegex</td><td>Entire file is dropped</td></tr>
+        <tr><td>Global mode in wrong path</td><td>Mode never loads</td></tr>
+        <tr><td>Smart/curly quotes</td><td>YAML parsing fails</td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>MCP Tools — Model Context Protocol</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the MCP tool and what is its purpose?</div>
+      <p><strong>MCP = Model Context Protocol</strong> — an open protocol that allows Bob to connect to external tools and services through a standardized interface.</p>
+      <table>
+        <tr><th></th><th>Without MCP</th><th>With MCP</th></tr>
+        <tr><td><strong>RDS</strong></td><td>CLI commands only</td><td>Direct SQL queries, live data</td></tr>
+        <tr><td><strong>Bedrock</strong></td><td>Not possible</td><td>Invoke AI models directly</td></tr>
+        <tr><td><strong>S3</strong></td><td>CLI commands only</td><td>Read/write objects via API</td></tr>
+        <tr><td><strong>CloudWatch</strong></td><td>CLI commands only</td><td>Live logs, metrics, alarms</td></tr>
+      </table>
+      <h3>Config File Locations</h3>
+      <table>
+        <tr><th>Scope</th><th>Path</th></tr>
+        <tr><td>Global</td><td><code>~/.bob/settings/mcp.json</code></td></tr>
+        <tr><td>Workspace</td><td><code>.bob/mcp.json</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2>AWS RDS MCP Server</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: Configure AWS RDS MCP server (workspace-scoped, IAM Role auth)</div>
+      <pre>{
+  "mcpServers": {
+    "aws-rds": {
+      "command": "npx",
+      "args": ["-y", "@aws/amazon-rds-mcp-server"],
+      "env": { "AWS_REGION": "us-east-1" }
+    }
+  }
+}</pre>
+      <div class="created-box">
+        <strong>Configured:</strong> <code>.bob/mcp.json</code> — Workspace scope, IAM Role auth (no keys needed)
+      </div>
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Node.js installed — run <code>node --version</code> to check</li>
+        <li>Update <code>AWS_REGION</code> to match your actual region</li>
+        <li>IAM Role needs: <code>rds:DescribeDBInstances</code>, <code>rds-data:ExecuteStatement</code></li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <h2>Skills — use_skill</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the use_skill tool and how does it work?</div>
+      <p>Skills are <strong>specialized instruction sets</strong> (SKILL.md files) that Bob loads before tackling specific tasks — like reading a procedure manual before performing an operation.</p>
+      <table>
+        <tr><th>Skill</th><th>Activates When</th></tr>
+        <tr><td><code>create-skill</code></td><td>User wants to create a new Bob skill</td></tr>
+        <tr><td><code>create-mode</code></td><td>User wants to create a new custom mode</td></tr>
+        <tr><td><code>configure-mcp</code></td><td>User wants to add or troubleshoot an MCP server</td></tr>
+        <tr><td><code>build-mcp-server</code></td><td>User wants to build a custom MCP server</td></tr>
+        <tr><td><code>xlsx-insights</code></td><td>User wants to analyze Excel files</td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">9</div>
+      <h2>k8s-deploy Skill</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: Create a skill for deploying applications to Kubernetes</div>
+      <div class="created-box">
+        <strong>Created:</strong> <code>~/.bob/skills/k8s-deploy/SKILL.md</code> — Global scope, manual activation via <code>/k8s-deploy</code>
+      </div>
+      <h3>Workflow Steps</h3>
+      <ol>
+        <li>Gather app details (name, image, port, replicas, namespace)</li>
+        <li>Choose deployment method — plain manifests or Helm chart</li>
+        <li>Generate Kubernetes manifests OR full Helm chart</li>
+        <li>Validate using <code>kubectl dry-run</code> or <code>helm lint</code></li>
+        <li>Apply the deployment to the cluster</li>
+        <li>Verify pods are running, check logs if failures</li>
+        <li>Provide summary and next steps</li>
+      </ol>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">10</div>
+      <h2>Todo List — update_todo_list</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the todo tool?</div>
+      <p>Bob's built-in task management system for tracking progress of complex, multi-step work.</p>
+      <table>
+        <tr><th>Symbol</th><th>Meaning</th></tr>
+        <tr><td><code>[x]</code></td><td>Completed</td></tr>
+        <tr><td><code>[-]</code></td><td>In Progress</td></tr>
+        <tr><td><code>[ ]</code></td><td>Pending</td></tr>
+      </table>
+      <h3>Rules</h3>
+      <ul>
+        <li>Always provides the full list on every update</li>
+        <li>Marks completed immediately after each task</li>
+        <li>Never removes unfinished tasks</li>
+        <li>Adds new todos dynamically when discovered</li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">11</div>
+      <h2>Subtasks — start_subtask</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the start_subtask tool?</div>
+      <p>Spins up a <strong>new, focused task instance</strong> with its own title, instructions, and todo list. Bob waits for your approval between subtasks — you stay in control at every step.</p>
+      <table>
+        <tr><th>Feature</th><th>Todo List</th><th>Subtask</th><th>Subagent</th></tr>
+        <tr><td>Purpose</td><td>Track steps</td><td>Separate focused task</td><td>Isolated side work</td></tr>
+        <tr><td>Context</td><td>Same conversation</td><td>New task instance</td><td>Isolated context</td></tr>
+        <tr><td>Output</td><td>Visual checklist</td><td>Full task completion</td><td>Summary to Bob</td></tr>
+        <tr><td>Parallelism</td><td>No</td><td>No</td><td>Yes</td></tr>
+        <tr><td>User review</td><td>No</td><td>Yes</td><td>No</td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">12</div>
+      <h2>Subagents — spawn_subagent</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the spawn_subagent tool?</div>
+      <p>Creates an <strong>independent agent</strong> in its own isolated context to handle focused, self-contained work — then automatically returns a summary and is <strong>destroyed</strong>.</p>
+      <h3>Lifecycle</h3>
+      <pre>Bob CREATES subagent
+  --&gt; ASSIGNS focused task
+  --&gt; Subagent WORKS independently
+  --&gt; RETURNS summary to Bob
+  --&gt; AUTOMATICALLY DESTROYED</pre>
+      <table>
+        <tr><th>Type</th><th>Name</th><th>Best For</th></tr>
+        <tr><td>Explorer</td><td><code>"explore"</code></td><td>Reading files, researching codebase</td></tr>
+        <tr><td>General</td><td><code>"general"</code></td><td>Full implementation work</td></tr>
+      </table>
+      <h3>fork_context Option</h3>
+      <ul>
+        <li><code>false</code> — Subagent only needs the description (default)</li>
+        <li><code>true</code> — Subagent needs prior conversation history</li>
+      </ul>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">13</div>
+      <h2>Mode Switching — switch_mode</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the switch_mode tool?</div>
+      <p>Allows Bob to <strong>automatically switch between modes</strong> during a task without manual intervention from the user.</p>
+      <h3>Example from This Session</h3>
+      <p>Bob was in Plan mode, tried to write <code>custom_modes.yaml</code>, got blocked (Plan only allows .md/.txt), then automatically switched to Agent mode to complete the task.</p>
+      <table>
+        <tr><th>Scenario</th><th>Switches To</th></tr>
+        <tr><td>Need to write or modify code</td><td>Agent mode</td></tr>
+        <tr><td>Need to plan before coding</td><td>Plan mode</td></tr>
+        <tr><td>Need to explain or answer</td><td>Ask mode</td></tr>
+        <tr><td>Implement a planned subtask</td><td>Agent mode</td></tr>
+      </table>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">14</div>
+      <h2>Bob Findings</h2>
+    </div>
+    <div class="section-body">
+      <div class="question">Q: What is the Bob Findings feature in the status bar?</div>
+      <p>A <strong>dedicated UI panel</strong> in the status bar that collects and displays important observations, issues, suggestions, or insights Bob notices while working — separate from the chat conversation.</p>
+      <table>
+        <tr><th>Type</th><th>Example</th></tr>
+        <tr><td>Bugs</td><td>Null pointer risk in auth.js line 42</td></tr>
+        <tr><td>Warnings</td><td>Function has no error handling</td></tr>
+        <tr><td>Security Issues</td><td>API key hardcoded in config.js</td></tr>
+        <tr><td>Suggestions</td><td>Loop can be optimized using map()</td></tr>
+        <tr><td>Code Smells</td><td>Function is 200 lines — consider splitting</td></tr>
+      </table>
+      <p>The <strong>counter badge</strong> (showing <code>0</code> in the status bar) increases as Bob flags issues. Click to open the panel.</p>
+    </div>
+  </div>
+
+  
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">15</div>
+      <h2>Complete Bob Feature Map</h2>
+    </div>
+    <div class="section-body">
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-title">Modes</div>
+          <div class="fc-desc">Plan • Agent • Ask • Custom Modes</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">Task Management</div>
+          <div class="fc-desc">Todo List • Subtasks • Subagents</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">Code Intelligence</div>
+          <div class="fc-desc">FindSymbol • GetSymbolsOverview • grep • glob</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">File Operations</div>
+          <div class="fc-desc">read • write • apply_diff • insert • list</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">External Integrations</div>
+          <div class="fc-desc">MCP Tools • execute_command</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">Skills</div>
+          <div class="fc-desc">create-skill • create-mode • configure-mcp • build-mcp-server • xlsx-insights</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">Output</div>
+          <div class="fc-desc">create_html_artifact • Bob Findings</div>
+        </div>
+        <div class="feature-card">
+          <div class="fc-title">Navigation</div>
+          <div class="fc-desc">switch_mode • start_workflow</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:20px">Things Created This Session</h3>
+      <table>
+        <tr><th>Item</th><th>Type</th><th>Location</th></tr>
+        <tr><td>DevOps Engineer</td><td>Custom Mode</td><td><code>~/.bob/settings/custom_modes.yaml</code></td></tr>
+        <tr><td>aws-rds</td><td>MCP Server</td><td><code>.bob/mcp.json</code></td></tr>
+        <tr><td>k8s-deploy</td><td>Skill</td><td><code>~/.bob/skills/k8s-deploy/SKILL.md</code></td></tr>
+        <tr><td>chat-history</td><td>Markdown File</td><td><code>chat-history.md</code></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">Made with IBM Bob</div>
+</div>
+</body>
+</html>
