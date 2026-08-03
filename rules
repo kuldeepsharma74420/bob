@@ -1,0 +1,64 @@
+Custom Rules in Bob are user-defined instructions that shape how Bob behaves — its coding style, conventions, tone, constraints, and workflow preferences — on a per-project or global basis. They are stored in a .bob/rules/ directory as Markdown (.md) files and are automatically loaded into Bob's context.
+
+How Custom Rules Work
+Location	Scope
+.bob/rules/*.md	Project-level — applies to this workspace only
+~/.bob/rules/*.md	Global — applies across all workspaces
+Each .md file in .bob/rules/ is a freeform Markdown document. Bob reads all of them and follows their instructions throughout the conversation.
+
+Examples of Custom Rules
+1. Code Style Rule — .bob/rules/code-style.md
+# Code Style
+
+- Always use TypeScript strict mode (`"strict": true`).
+- Use `const` over `let` wherever possible.
+- Prefer named exports over default exports.
+- All functions must have explicit return types.
+- Use 2-space indentation; never tabs.
+
+2. Git Commit Convention Rule — .bob/rules/git.md
+# Git Conventions
+
+- Commit messages must follow Conventional Commits format:
+  `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`
+- Never commit directly to `main` — always create a feature branch.
+- PR titles must reference a JIRA ticket, e.g. `feat(AUTH-123): add OAuth login`.
+
+3. Testing Rule — .bob/rules/testing.md
+# Testing Standards
+
+- All new functions must have at least one unit test.
+- Use Vitest for all tests in this project.
+- Test files live alongside source files: `foo.ts` → `foo.test.ts`.
+- Mock all external HTTP calls — never hit real APIs in tests.
+
+4. Architecture Rule — .bob/rules/architecture.md
+# Architecture Constraints
+
+- This project follows a layered architecture: Controller → Service → Repository.
+- Business logic must never live in controllers.
+- Database access is only allowed inside `src/repositories/`.
+- Do not add new npm dependencies without explicit user approval.
+
+5. Language / Communication Rule — .bob/rules/communication.md
+# Communication
+
+- Always respond in British English.
+- Keep explanations concise — prefer bullet points over paragraphs.
+- When suggesting a refactor, always explain the reason in one sentence.
+
+6. Security Rule — .bob/rules/security.md
+# Security
+
+- Never log sensitive fields: `password`, `token`, `secret`, `apiKey`.
+- All user input must be validated with Zod before use.
+- Secrets are loaded from environment variables only — never hard-coded.
+
+Creating Your First Rule
+Just create the directory and drop in a Markdown file:
+
+New-Item -ItemType Directory -Path .bob/rules -Force
+New-Item -Path .bob/rules/code-style.md
+
+Bob will pick up the rules automatically in the next conversation turn. You can have as many rule files as you like — splitting them by concern (style, git, testing, security) keeps them easy to maintain.
+
