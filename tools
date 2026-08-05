@@ -1,0 +1,58 @@
+# Install Python, Node.js LTS, and Git on Windows.
+# Run PowerShell as Administrator.
+
+$ErrorActionPreference = "Stop"
+
+if (-not (Get-Command winget.exe -ErrorAction SilentlyContinue)) {
+    throw "winget is not installed. Install or update 'App Installer' from the Microsoft Store, then run this script again."
+}
+
+$packages = @(
+    @{ Name = "Python";  Id = "Python.Python.3.14" },
+    @{ Name = "Node.js"; Id = "OpenJS.NodeJS.LTS" },
+    @{ Name = "Git";     Id = "Git.Git" }
+)
+
+foreach ($package in $packages) {
+    Write-Host "`nInstalling $($package.Name)..." -ForegroundColor Cyan
+
+    winget install `
+        --id $package.Id `
+        --exact `
+        --silent `
+        --accept-package-agreements `
+        --accept-source-agreements
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "$($package.Name) returned exit code $LASTEXITCODE. It may already be installed; check the verification step."
+    }
+}
+
+# Refresh PATH for this PowerShell session.
+$machinePath = [Environment]::GetEnvironmentVariable("Path", "Machine")
+$userPath = [Environment]::GetEnvironmentVariable("Path", "User")
+$env:Path = "$machinePath;$userPath"
+
+Write-Host "`nVerifying installations..." -ForegroundColor Cyan
+
+$checks = @(
+    @{ Name = "Python"; Command = "python"; Arguments = @("--version") },
+    @{ Name = "pip";    Command = "python"; Arguments = @("-m", "pip", "--version") },
+    @{ Name = "Node";   Command = "node";   Arguments = @("--version") },
+    @{ Name = "npm";    Command = "npm.cmd"; Arguments = @("--version") },
+    @{ Name = "Git";    Command = "git";    Arguments = @("--version") }
+)
+
+foreach ($check in $checks) {
+    $command = Get-Command $check.Command -ErrorAction SilentlyContinue
+
+    if ($command) {
+        Write-Host "$($check.Name): " -NoNewline -ForegroundColor Green
+        & $check.Command @($check.Arguments)
+    }
+    else {
+        Write-Warning "$($check.Name) was not found in this session. Restart PowerShell and check again."
+    }
+}
+
+Write-Host "`nInstallation complete. Restart PowerShell before using the tools." -ForegroundColor Green
