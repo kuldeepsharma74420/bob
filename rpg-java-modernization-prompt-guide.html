@@ -1,0 +1,481 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RPG → Java Modernization Prompt Guide</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.6;background:#f7f8fa;color:#1f2328}
+
+.shell{max-width:860px;margin:0 auto;padding:28px 16px 56px}
+
+/* hero */
+.hero{background:#1f2328;color:#fff;border-radius:8px;padding:28px 32px 24px;margin-bottom:32px}
+.hero-eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#7c8590;margin-bottom:8px}
+.hero h1{font-size:22px;font-weight:700;line-height:1.3}
+.hero p{color:#adb5bd;font-size:13px;margin-top:8px;max-width:620px}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:12px;margin-right:4px;letter-spacing:.03em}
+.pill-rpg{background:#7c5cd8;color:#fff}
+.pill-java{background:#3b82d4;color:#fff}
+.pill-spring{background:#16a34a;color:#fff}
+
+/* phase header */
+.phase{display:flex;align-items:center;gap:12px;margin:32px 0 14px}
+.phase-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.phase-1 .phase-num{background:#dbeafe;color:#1d4ed8}
+.phase-2 .phase-num{background:#fef3c7;color:#92400e}
+.phase-3 .phase-num{background:#dcfce7;color:#166534}
+.phase-4 .phase-num{background:#ede9fe;color:#6d28d9}
+.phase-5 .phase-num{background:#fee2e2;color:#991b1b}
+.phase-title{font-size:15px;font-weight:700;color:#1f2328}
+.phase-sub{font-size:12px;color:#57606a;margin-top:1px}
+
+/* prompt card */
+.pcard{background:#fff;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:16px;overflow:hidden}
+.pcard-head{padding:11px 16px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pcard-left{display:flex;align-items:center;gap:8px}
+.ptag{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;letter-spacing:.04em;white-space:nowrap}
+.ptag-understand{background:#dbeafe;color:#1d4ed8}
+.ptag-convert{background:#dcfce7;color:#166534}
+.ptag-refine{background:#fef3c7;color:#92400e}
+.ptag-verify{background:#ede9fe;color:#6d28d9}
+.ptag-scale{background:#fee2e2;color:#991b1b}
+.pcard-title{font-size:13px;font-weight:700;color:#1f2328}
+.copy-btn{font-size:11px;color:#57606a;border:1px solid #e5e7eb;border-radius:6px;padding:3px 10px;cursor:pointer;background:#f7f8fa;white-space:nowrap;user-select:none}
+.copy-btn:hover{border-color:#adb5bd;color:#1f2328}
+.copy-btn.copied{background:#dcfce7;color:#166534;border-color:#86efac}
+
+.pcard-body{padding:14px 16px}
+.prompt-box{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:6px;padding:14px 16px;font-size:13px;line-height:1.8;color:#1f2328;white-space:pre-wrap;word-break:break-word}
+
+/* inline code in prompt */
+.prompt-box code{background:#e5e7eb;border-radius:3px;padding:0 4px;font-family:"SFMono-Regular","Cascadia Code","Consolas",monospace;font-size:12px}
+
+.why{margin-top:10px;padding:10px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:12px;color:#57606a;line-height:1.7}
+.why strong{color:#1f2328}
+
+/* tip box */
+.tip-box{background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#92400e;line-height:1.7}
+.tip-box strong{color:#78350f}
+
+/* rule list */
+.rules{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:18px 20px;margin-top:32px}
+.rules h3{font-size:13px;font-weight:700;margin-bottom:12px}
+.rule{display:flex;gap:12px;margin-bottom:10px;font-size:13px}
+.rule-num{width:22px;height:22px;border-radius:50%;background:#1f2328;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rule-text{color:#1f2328;line-height:1.6}
+.rule-text em{color:#57606a;font-style:normal}
+
+/* divider */
+.divider{border:none;border-top:1px solid #e5e7eb;margin:12px 0}
+
+footer{text-align:center;font-size:11px;color:#adb5bd;border-top:1px solid #e5e7eb;padding-top:16px;margin-top:36px}
+</style>
+</head>
+<body>
+<div class="shell">
+
+
+<div class="hero">
+  <div class="hero-eyebrow">Legacy Modernization · Team Prompt Guide</div>
+  <h1>How to prompt an AI to convert<br />RPG IV → Java Spring Boot</h1>
+  <p style="margin-top:10px">
+    <span class="pill pill-rpg">INVREPORT.rpgle</span>
+    <span style="color:#57606a">→</span>
+    <span class="pill pill-java">Java 17</span>
+    <span class="pill pill-spring">Spring Boot</span>
+  </p>
+  <p>5 phases · 12 ready-to-use prompts · copy, paste, and send to any AI assistant</p>
+</div>
+
+<div class="tip-box">
+  <strong>Before you start — always attach these 3 files to your chat:</strong><br />
+  1. <strong>INVREPORT.rpgle</strong> — the full RPG source (never summarise it, paste it whole)<br />
+  2. <strong>INVENTORY-DATA.txt</strong> — the fixed-width data file<br />
+  3. <strong>sample-output.txt</strong> — the expected report output (your golden reference)
+</div>
+
+
+<div class="phase phase-1">
+  <div class="phase-num">1</div>
+  <div>
+    <div class="phase-title">Understand the Legacy Code First</div>
+    <div class="phase-sub">Make the AI explain before it writes a single line of Java</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-understand">UNDERSTAND</span><span class="pcard-title">Plain-English explanation of the program</span></div>
+    <span class="copy-btn" data-idx="0">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p0">I have a legacy RPG IV program called INVREPORT.rpgle running on IBM i (AS/400). I have pasted the full source code and the data file below.
+
+Before writing any Java code, please:
+1. Explain in plain English what this program does from start to finish.
+2. List every business rule it enforces (e.g. low stock detection, status classification).
+3. Describe each procedure — printReportHeader, printDetailLine, checkLowStock, printSummary — and what it is responsible for.
+4. Identify any edge cases or tricky logic I should watch out for during migration.
+
+[PASTE INVREPORT.rpgle HERE]
+[PASTE INVENTORY-DATA.txt HERE]</div>
+    <div class="why"><strong>Why use this first:</strong> Forces the AI to understand before it codes. You will catch hidden business rules (like the &lt;= in checkLowStock vs &lt;) before they get silently changed.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-understand">UNDERSTAND</span><span class="pcard-title">Map the fixed-width data file layout</span></div>
+    <span class="copy-btn" data-idx="1">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p1">The RPG program reads a fixed-width text file. Each record is 83 bytes long. Map every field by its exact byte position (1-based) and give me:
+- Field name
+- Start and end byte position
+- Data type in RPG
+- What the equivalent Java type should be
+- Any gotchas (e.g. implied decimal places, padding)
+
+Pay special attention to the unit price field — it is stored as an 8-digit integer with 2 implied decimal places (e.g. 00124999 means $1,249.99).
+
+[PASTE INVENTORY-DATA.txt HERE]</div>
+    <div class="why"><strong>Why use this:</strong> Fixed-width parsing is the #1 source of bugs in legacy migrations. Off-by-one errors in substring positions cause silent data corruption.</div>
+  </div>
+</div>
+
+
+<div class="phase phase-2">
+  <div class="phase-num">2</div>
+  <div>
+    <div class="phase-title">Convert to Java — Layer by Layer</div>
+    <div class="phase-sub">Migrate in small, verifiable pieces — not all at once</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-convert">CONVERT</span><span class="pcard-title">Data model — the InventoryRecord POJO</span></div>
+    <span class="copy-btn" data-idx="2">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p2">Convert the RPG data structure dcl-ds InventoryRec into a Java POJO class called InventoryRecord.
+
+Rules:
+- Map dcl-s fields with packed(8:2) → BigDecimal
+- Map dcl-s fields with int(10) → int
+- Map dcl-s fields with ind → boolean
+- Map dcl-s fields with char(N) → String
+- Add a lineValue BigDecimal field (computed: quantity × unitPrice)
+- Add a lowStock boolean field (computed: quantity &lt;= reorderPoint)
+- Add a statusDescription String field (computed: "Active", "Discontinued", or "Unknown")
+- Add standard getters and setters for every field
+
+Do NOT add any parsing logic yet — just the model class.
+
+[PASTE the dcl-s variable declarations from INVREPORT.rpgle HERE]</div>
+    <div class="why"><strong>Why layer by layer:</strong> Getting the data model right first means every subsequent layer builds on a solid foundation. Mixing parsing + business logic + model in one prompt leads to messy, hard-to-test code.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-convert">CONVERT</span><span class="pcard-title">Service layer — file parsing and business logic</span></div>
+    <span class="copy-btn" data-idx="3">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p3">Create a Java Spring @Service class called InventoryService that reads INVENTORY-DATA.txt from the classpath and applies the same business logic as the RPG main loop.
+
+Requirements:
+1. Read the file line by line using BufferedReader.
+2. Parse each 83-byte fixed-width record using substring — use these exact positions (0-based Java):
+   - productId:    substring(0, 6)
+   - productName:  substring(6, 36)
+   - category:     substring(36, 56)
+   - quantity:     Integer.parseInt(substring(56, 62).trim())
+   - reorderPoint: Integer.parseInt(substring(62, 68).trim())
+   - unitPrice:    new BigDecimal(parseInt(substring(68, 76).trim())).movePointLeft(2)
+   - status:       substring(76, 77)
+3. Reproduce the RPG checkLowStock() procedure: flag as low stock when quantity &lt;= reorderPoint.
+4. Reproduce the RPG select/when block: status "A" → "Active", "D" → "Discontinued", else "Unknown".
+5. Calculate lineValue = unitPrice × quantity using BigDecimal.
+6. Return a List&lt;InventoryRecord&gt; of all parsed records.
+
+Do NOT change the business rule from &lt;= to &lt; — the original RPG uses &lt;= and that must be preserved exactly.</div>
+    <div class="why"><strong>Why be explicit about &lt;= vs &lt;:</strong> This one character difference changes which products get flagged. Spelling it out prevents the AI from "cleaning up" logic it perceives as a bug.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-convert">CONVERT</span><span class="pcard-title">Summary statistics — the printSummary procedure</span></div>
+    <span class="copy-btn" data-idx="4">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p4">Create a Java class called InventorySummary that computes the same statistics as the RPG printSummary() procedure, given a List&lt;InventoryRecord&gt;.
+
+Compute these fields in the constructor:
+- totalProducts       → records.size()
+- activeProducts      → count where status = "A"
+- discontinuedProducts → totalProducts - activeProducts
+- lowStockAlerts      → count where lowStock = true
+- outOfStockItems     → count where quantity = 0
+- totalQuantity       → sum of all quantity values
+- totalInventoryValue → sum of all lineValue values (BigDecimal)
+- activeInventoryValue → sum of lineValue where status = "A" (BigDecimal)
+- averageUnitPrice    → totalInventoryValue / totalProducts, scale 2, HALF_UP
+- averageQuantity     → totalQuantity / totalProducts, scale 2, HALF_UP
+
+The expected values from sample-output.txt are:
+- Total Products: 16
+- Active: 13, Discontinued: 3
+- Low Stock Alerts: 10
+- Out of Stock: 2
+- Total Quantity: 1087
+- Total Inventory Value: $75,323.13
+- Active Inventory Value: $71,293.39</div>
+    <div class="why"><strong>Why include expected values:</strong> Gives the AI concrete numbers to verify against. If its implementation produces different totals, it knows it made a mistake.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-convert">CONVERT</span><span class="pcard-title">Web layer — Spring Boot controller and HTML view</span></div>
+    <span class="copy-btn" data-idx="5">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p5">Create a Spring Boot @Controller and a Thymeleaf HTML template that display the inventory report in a browser.
+
+Controller requirements:
+- GET / → renders the Thymeleaf template named "report"
+- Passes "allRecords" (List&lt;InventoryRecord&gt;) and "summary" (InventorySummary) to the model
+- GET /api/report → returns the InventorySummary as JSON (@ResponseBody)
+
+HTML template requirements:
+- Show 8 KPI cards at the top: Total Products, Active, Discontinued, Low Stock, Out of Stock, Total Qty, Total Value, Active Value
+- Show a filter bar with buttons: All, Active, Discontinued, Low Stock, Out of Stock, and one button per category (Electronics, Furniture, Office Supplies, Hardware, Software)
+- Show a product table with columns: Prod ID, Product Name, Category, Qty, Reorder Point, Unit Price, Line Value, Status, Stock Level bar, Alert badge
+- Colour the Low Stock rows amber and Out of Stock rows red
+- All filtering must happen client-side using vanilla JavaScript (no page reload, no framework)
+- Column headers must be clickable to sort ascending/descending</div>
+    <div class="why"><strong>Why specify "vanilla JavaScript":</strong> Without this, the AI may introduce React, Vue, or jQuery — unnecessary dependencies that complicate a simple migration.</div>
+  </div>
+</div>
+
+
+<div class="phase phase-3">
+  <div class="phase-num">3</div>
+  <div>
+    <div class="phase-title">Verify the Output Matches the Original</div>
+    <div class="phase-sub">Use sample-output.txt as your test oracle</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-verify">VERIFY</span><span class="pcard-title">Write unit tests that validate against the golden output</span></div>
+    <span class="copy-btn" data-idx="6">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p6">Write JUnit 5 unit tests for InventoryService and InventorySummary that verify the Java output matches the original RPG sample-output.txt exactly.
+
+Test assertions to include:
+1. All 16 records are loaded from INVENTORY-DATA.txt
+2. Exactly 10 products are flagged as low stock
+3. Exactly 2 products are out of stock (quantity = 0)
+4. Active count = 13, Discontinued count = 3
+5. Total inventory value = 75323.13
+6. Active inventory value = 71293.39
+7. Total quantity on hand = 1087
+8. Product 100001 (LAPTOP COMPUTER PRO 15): price = 1249.99, qty = 25, lowStock = true
+9. Product 300001 (PRINTER PAPER REAM A4): price = 5.99, qty = 450, lowStock = false
+10. Product 200002 (STANDING DESK ADJUSTABLE): qty = 0, lowStock = true, out of stock = true
+
+Use @SpringBootTest or plain JUnit — whichever is simpler.
+Place the test data file INVENTORY-DATA.txt in src/test/resources.</div>
+    <div class="why"><strong>Why write tests before reviewing the UI:</strong> Numbers can look right in a browser but be subtly wrong (rounding errors, off-by-one). Tests catch this before it reaches production.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-verify">VERIFY</span><span class="pcard-title">Ask the AI to explain differences it finds</span></div>
+    <span class="copy-btn" data-idx="7">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p7">Compare the output of the Java InventoryService against the original RPG sample-output.txt line by line.
+
+For every product, check:
+- Is the unit price correct? (Remember: RPG stored it as integer cents, e.g. 00124999 = $1,249.99)
+- Is the line value correct? (quantity × unit price)
+- Is the low stock flag correct? (quantity &lt;= reorderPoint, not strictly &lt;)
+- Is the status description correct? ("Active" or "Discontinued")
+
+If you find any discrepancy between the Java output and sample-output.txt, explain:
+1. Which product is wrong
+2. What the RPG produces vs what the Java produces
+3. What caused the difference
+4. How to fix it
+
+[PASTE sample-output.txt HERE]
+[PASTE your Java output or test failure message HERE]</div>
+    <div class="why"><strong>Why ask for explanations:</strong> "Fix it" produces a patch. "Explain it first" produces understanding — so your team knows what changed and why.</div>
+  </div>
+</div>
+
+
+<div class="phase phase-4">
+  <div class="phase-num">4</div>
+  <div>
+    <div class="phase-title">Refine and Enhance</div>
+    <div class="phase-sub">Add features the RPG program could never have</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-refine">REFINE</span><span class="pcard-title">Replace the flat file with a database</span></div>
+    <span class="copy-btn" data-idx="8">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p8">Migrate the INVENTORY-DATA.txt flat file to a PostgreSQL database. Generate three things:
+
+1. A CREATE TABLE SQL script:
+   - Table name: inventory
+   - Columns matching the RPG record layout (product_id, product_name, category, quantity, reorder_point, unit_price as DECIMAL(8,2), status CHAR(1))
+   - Add a primary key on product_id
+
+2. A Spring Data JPA @Entity class called InventoryItem that maps to this table.
+
+3. A Spring @Component called InventoryDataLoader that:
+   - Runs once on application startup using @EventListener(ApplicationReadyEvent.class)
+   - Reads INVENTORY-DATA.txt and inserts all 16 records into the database
+   - Skips the load if the table already has rows (idempotent)
+
+Keep InventoryService working unchanged — just swap its data source from the flat file to the JPA repository.</div>
+    <div class="why"><strong>Why ask for all three together:</strong> The table, entity, and loader are tightly coupled. Getting them separately often produces mismatches in column names or types.</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-refine">REFINE</span><span class="pcard-title">Add a REST API for external integrations</span></div>
+    <span class="copy-btn" data-idx="9">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p9">The original RPG program only printed to a console. Add a REST API to the Spring Boot application so other systems can consume the inventory data.
+
+Add these endpoints to a new @RestController called InventoryApiController:
+- GET /api/products              → returns all 16 products as a JSON array
+- GET /api/products/{id}         → returns a single product by productId
+- GET /api/products?status=A     → returns only Active products
+- GET /api/products?lowStock=true → returns only products where quantity &lt;= reorderPoint
+- GET /api/summary               → returns all summary statistics as JSON
+
+The JSON field names should be camelCase (e.g. productId, unitPrice, lineValue, lowStock).
+Include proper HTTP 404 responses when a product is not found.
+Do NOT add authentication — this is an internal tool.</div>
+    <div class="why"><strong>Why specify "no authentication":</strong> Saves the AI generating Spring Security boilerplate you don't need yet. Add security in a separate, focused prompt.</div>
+  </div>
+</div>
+
+
+<div class="phase phase-5">
+  <div class="phase-num">5</div>
+  <div>
+    <div class="phase-title">Package and Deploy</div>
+    <div class="phase-sub">Make it runnable anywhere, not just on your laptop</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-scale">DEPLOY</span><span class="pcard-title">Containerise with Docker</span></div>
+    <span class="copy-btn" data-idx="10">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p10">Write a Dockerfile for the Spring Boot inventory application using a multi-stage build.
+
+Stage 1 — Build:
+- Base image: eclipse-temurin:17-jdk
+- Copy pom.xml and src/ into /app
+- Run: mvn clean package -q -DskipTests
+
+Stage 2 — Runtime:
+- Base image: eclipse-temurin:17-jre
+- Copy only the JAR from Stage 1 (target/inventory-web-1.0.0.jar)
+- Expose port 8080
+- Set ENTRYPOINT to run the JAR
+
+Also write a docker-compose.yml that:
+- Runs the Spring Boot app on port 8080
+- Adds a restart: unless-stopped policy
+- Mounts no volumes (the data file is bundled in the JAR)
+
+The final image should be under 300 MB.</div>
+    <div class="why"><strong>Why multi-stage build:</strong> A single-stage build would include the entire JDK and Maven in the final image (~600 MB). Multi-stage produces a lean runtime image (~200 MB).</div>
+  </div>
+</div>
+
+<div class="pcard">
+  <div class="pcard-head">
+    <div class="pcard-left"><span class="ptag ptag-scale">DEPLOY</span><span class="pcard-title">The master prompt — full conversion in one shot</span></div>
+    <span class="copy-btn" data-idx="11">Copy prompt</span>
+  </div>
+  <div class="pcard-body">
+    <div class="prompt-box" id="p11">I need to modernise a legacy IBM i RPG IV program called INVREPORT into a Java Spring Boot web application accessible in a browser. I have attached the full RPG source, data file, and expected output.
+
+Please generate the complete Java project with this exact structure:
+
+TECH STACK
+- Java 17, Spring Boot 3.2, Maven, Thymeleaf, no external CSS frameworks
+
+FILES TO CREATE
+1. pom.xml — Spring Boot parent, web + thymeleaf starters
+2. InventoryApplication.java — @SpringBootApplication entry point
+3. model/InventoryRecord.java — POJO: all RPG dcl-s fields, plus computed lineValue, lowStock, statusDescription
+4. model/InventorySummary.java — summary stats computed from List&lt;InventoryRecord&gt;
+5. service/InventoryService.java — reads INVENTORY-DATA.txt from classpath, parses fixed-width records, applies business logic
+6. controller/InventoryController.java — GET / returns HTML report, GET /api/report returns JSON
+7. templates/report.html — Thymeleaf page with KPI cards, filter buttons, sortable table
+8. src/main/resources/INVENTORY-DATA.txt — copy the data file here
+
+BUSINESS RULES TO PRESERVE EXACTLY
+- Low stock flag: quantity &lt;= reorderPoint (not &lt;, not &gt;)
+- Status: "A" = Active, "D" = Discontinued, anything else = Unknown
+- Unit price: stored as 8-digit integer with 2 implied decimals (÷100)
+- Line value: quantity × unit price
+
+EXPECTED OUTPUT TO VERIFY AGAINST
+- 16 products, 13 active, 3 discontinued
+- 10 low stock alerts, 2 out of stock
+- Total inventory value: $75,323.13
+- Active inventory value: $71,293.39
+
+[PASTE INVREPORT.rpgle HERE]
+[PASTE INVENTORY-DATA.txt HERE]
+[PASTE sample-output.txt HERE]</div>
+    <div class="why"><strong>When to use this:</strong> Use this as your starting prompt when working with a fresh AI session that has no prior context. It gives everything needed in one message — stack, structure, rules, and golden values to verify against.</div>
+  </div>
+</div>
+
+
+<div class="rules">
+  <h3>The 7 Golden Rules of Legacy Modernization Prompting</h3>
+  <div class="rule"><div class="rule-num">1</div><div class="rule-text"><strong>Always paste the full source.</strong> <em>Never summarise the RPG code — paste it whole. The AI needs to see every dcl-s, every procedure, every edge case.</em></div></div>
+  <div class="rule"><div class="rule-num">2</div><div class="rule-text"><strong>Include the data file and expected output.</strong> <em>sample-output.txt is your test oracle. Without it, you can't verify the Java is correct.</em></div></div>
+  <div class="rule"><div class="rule-num">3</div><div class="rule-text"><strong>Name the business rules explicitly.</strong> <em>State: "low stock is quantity &lt;= reorderPoint — do not change this to &lt;". The AI may "fix" what it thinks is a bug.</em></div></div>
+  <div class="rule"><div class="rule-num">4</div><div class="rule-text"><strong>Ask it to explain before it codes.</strong> <em>Use a "Phase 1" prompt first. Hidden business rules surface in the explanation, not in the generated code.</em></div></div>
+  <div class="rule"><div class="rule-num">5</div><div class="rule-text"><strong>Say what you do NOT want.</strong> <em>"No React", "no authentication", "no external CSS frameworks" — AI assistants over-engineer unless you set boundaries.</em></div></div>
+  <div class="rule"><div class="rule-num">6</div><div class="rule-text"><strong>Migrate in layers, not all at once.</strong> <em>Model → Service → Controller → View. Each layer is easier to review and test independently.</em></div></div>
+  <div class="rule"><div class="rule-num">7</div><div class="rule-text"><strong>Verify with numbers.</strong> <em>Run the Java output against sample-output.txt. If totals match, the migration is correct. If not, ask the AI to explain the discrepancy before fixing it.</em></div></div>
+</div>
+
+</div>
+
+<footer>Made with IBM Bob</footer>
+
+
+</body>
+</html>
