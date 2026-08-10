@@ -1,0 +1,66 @@
+Step 1 — Create a GitHub Personal Access Token
+Go to https://github.com/settings/tokens
+Click "Generate new token (classic)"
+Give it a name (e.g. bob-mcp)
+Select scopes:
+repo — full repository access
+read:org — org info (optional)
+read:user — user info (optional)
+Click "Generate token" and copy it — you won't see it again
+Step 2 — Confirm Node.js is Installed
+Run this in your terminal:
+
+node --version
+
+If not installed, download it from https://nodejs.org. You need v18+.
+
+Step 3 — Locate or Create the MCP Config File
+Scope	Path
+Global (all workspaces)	C:\Users\<YourName>\.bob\settings\mcp.json
+Workspace only	.bob\mcp.json inside your project folder
+If the file doesn't exist, create it.
+
+Step 4 — Add the GitHub Server Entry
+Open the file and add the github entry under mcpServers. If the file is empty/new:
+
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+
+If the file already has other servers, just add the github block alongside them:
+
+{
+  "mcpServers": {
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite", "path/to/db"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+
+Replace YOUR_TOKEN_HERE with the token from Step 1.
+
+Step 5 — Reload Bob
+Save the file — Bob hot-reloads MCP configs automatically when a workspace folder is open.
+Check the MCP panel in Bob's UI to confirm github shows as ✅ connected.
+Step 6 — Test It
+Once connected, you can ask Bob things like:
+
+"How many repositories are in my GitHub account?"
+"List my open pull requests"
+"Create an issue in repo X"
