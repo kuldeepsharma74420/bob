@@ -2937,7 +2937,7 @@ Perform a security-focused review:
 </div>
 
 <!-- ═══════════════════════════════════════════════════
-     SLIDE 20a — OVERVIEW & PROMPTS 1–2
+     SLIDE 20a — OVERVIEW & PROMPT 1
 ════════════════════════════════════════════════════ -->
 <div class="slide slide-topic" id="s20">
   <div class="slide-header" style="background:#9f1853">
@@ -2950,15 +2950,11 @@ Perform a security-focused review:
   <div class="slide-body two-col">
     <div>
       <div class="section-label">What We're Building</div>
-      <p style="font-size:14px;color:#393939;line-height:1.7;margin-bottom:14px">
-        We take a legacy RPG IV program that runs as a text report on IBM i and convert it into a
-        <strong>Java Spring Boot web app</strong> you can open in any browser.
-        Six prompts. Each one does exactly one job.
-      </p>
+      <p style="font-size:14px;color:#393939;line-height:1.7;margin-bottom:14px">We take a legacy RPG IV program that runs as a text report on IBM i and convert it into a <strong>Java Spring Boot web app</strong> you can open in any browser. Six prompts. Each one does exactly one job.</p>
       <table style="margin-bottom:14px">
-        <tr><th>#</th><th>Prompt</th><th>What it produces</th><th style="white-space:nowrap">Skip?</th></tr>
+        <tr><th>#</th><th>Prompt</th><th>What it produces</th><th>Skip?</th></tr>
         <tr><td>1</td><td>Understand the RPG code</td><td>Plain-English explanation + business rules</td><td style="color:#198038;font-weight:700">Optional</td></tr>
-        <tr><td>2</td><td>Create the Java data model</td><td><code>InventoryRecord.java</code> (POJO)</td><td style="color:#da1e28;font-weight:700">Required</td></tr>
+        <tr><td>2</td><td>Create the Java data model</td><td><code>InventoryRecord.java</code></td><td style="color:#da1e28;font-weight:700">Required</td></tr>
         <tr><td>3</td><td>Create the file reader</td><td><code>InventoryService.java</code></td><td style="color:#da1e28;font-weight:700">Required</td></tr>
         <tr><td>4</td><td>Create the summary stats</td><td><code>InventorySummary.java</code></td><td style="color:#da1e28;font-weight:700">Required</td></tr>
         <tr><td>5</td><td>Create the web page</td><td>Controller + <code>report.html</code></td><td style="color:#da1e28;font-weight:700">Required</td></tr>
@@ -2966,14 +2962,14 @@ Perform a security-focused review:
       </table>
       <div class="callout callout-tip">
         <span class="callout-icon">✅</span>
-        <span>Open the project folder in BOB before sending any prompt — BOB reads the files automatically so you don't need to paste them.</span>
+        <span>Open the project folder in BOB before sending any prompt — BOB reads files automatically so you don't need to paste them.</span>
       </div>
     </div>
     <div>
-      <div class="section-label">Prompt 1 — Understand the RPG code &nbsp;<span style="background:#defbe6;color:#198038;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">OPTIONAL — skip if short on time</span></div>
+      <div class="section-label">Prompt 1 — Understand the RPG code &nbsp;<span style="background:#defbe6;color:#198038;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">OPTIONAL</span></div>
       <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
         <span class="callout-icon">💡</span>
-        <span><strong>Why use it:</strong> Forces BOB to explain the program before touching any Java — hidden business rules surface here, not in generated code.</span>
+        <span><strong>Why use it:</strong> Forces BOB to explain before touching Java — hidden business rules surface here, not in generated code.</span>
       </div>
       <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
         <p style="font-family:monospace;font-size:12px;color:#161616;line-height:1.8">I have a legacy RPG IV program called INVREPORT.rpgle.<br>
@@ -3001,10 +2997,10 @@ Please explain:<br>
   </div>
   <div class="slide-body two-col">
     <div>
-      <div class="section-label">Prompt 2 — Create the Java data model &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
+      <div class="section-label">Prompt 2 — Java data model &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
       <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
         <span class="callout-icon">💡</span>
-        <span><strong>Why use it:</strong> Converts the RPG data structure into a Java class — this is the foundation everything else builds on.</span>
+        <span><strong>Why use it:</strong> Converts the RPG data structure into a Java class — foundation everything else builds on.</span>
       </div>
       <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
         <p style="font-family:monospace;font-size:12px;color:#161616;line-height:1.8">Convert the RPG inventory data structure into a Java class called InventoryRecord.<br>
@@ -3012,12 +3008,98 @@ Use these type mappings: packed decimal → BigDecimal, integer → int, indicat
 Add three computed fields:<br>
 - lineValue = quantity × unitPrice<br>
 - lowStock = quantity &lt;= reorderPoint (keep &lt;=, do not change to &lt;)<br>
-- statusDescription = "Active" if status is A, "Discontinued" if D, "Unknown" otherwise.<br>
+- statusDescription = "Active" if A, "Discontinued" if D, "Unknown" otherwise.<br>
 Add getters and setters. No file-reading logic yet — just the model class.</p>
       </div>
     </div>
     <div>
-      <div class="section-label">Prompt 3 — Create the file reader service &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
+      <div class="section-label">Prompt 3 — File reader service &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
+      <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
+        <span class="callout-icon">💡</span>
+        <span><strong>Why use it:</strong> Reads the flat data file and converts each line into an InventoryRecord — replaces the RPG read loop.</span>
+      </div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:12px;color:#161616;line-height:1.8">Create a Spring @Service called InventoryService.<br>
+It should read INVENTORY-DATA.txt from the classpath using BufferedReader and return a List&lt;InventoryRecord&gt;.<br>
+Important rules from the original RPG program:<br>
+- low stock check uses &lt;= (not &lt;) — do not change this<br>
+- unit price is stored as an 8-digit integer with 2 implied decimal places (e.g. 00124999 = $1,249.99) — parse it as BigDecimal<br>
+- status "A" = Active, "D" = Discontinued, anything else = Unknown</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — Prompts 2 &amp; 3</span></div>
+</div>
+  <div class="slide-body two-col">
+    <div>
+      <div class="section-label">Before You Start — Always Attach These 3 Files</div>
+      <table style="margin-bottom:14px">
+        <tr><th>File</th><th>Purpose</th></tr>
+        <tr><td><code>INVREPORT.rpgle</code></td><td>Full RPG source — never summarise, paste whole</td></tr>
+        <tr><td><code>INVENTORY-DATA.txt</code></td><td>The fixed-width data file</td></tr>
+        <tr><td><code>sample-output.txt</code></td><td>Expected report output — your golden reference</td></tr>
+      </table>
+      <div class="section-label">5 Phases · 12 Prompts</div>
+      <table>
+        <tr><th>Phase</th><th>Goal</th></tr>
+        <tr><td>1 — Understand</td><td>Make BOB explain before writing any Java</td></tr>
+        <tr><td>2 — Convert</td><td>Migrate layer by layer (model → service → controller)</td></tr>
+        <tr><td>3 — Verify</td><td>Validate output against golden reference</td></tr>
+        <tr><td>4 — Refine</td><td>Add features the RPG program could never have</td></tr>
+        <tr><td>5 — Deploy</td><td>Containerise and package for production</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="section-label">Phase 1 — Prompt 1: Plain-English Explanation</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:10px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">I have a legacy RPG IV program called INVREPORT.rpgle running on IBM i (AS/400). Before writing any Java code, please:<br>
+1. Explain in plain English what this program does from start to finish.<br>
+2. List every business rule it enforces (e.g. low stock detection, status classification).<br>
+3. Describe each procedure — printReportHeader, printDetailLine, checkLowStock, printSummary — and what it is responsible for.<br>
+4. Identify any edge cases or tricky logic I should watch out for during migration.<br><br>
+[PASTE INVREPORT.rpgle HERE]<br>
+[PASTE INVENTORY-DATA.txt HERE]</p>
+      </div>
+      <div class="section-label">Phase 1 — Prompt 2: Map Fixed-Width Data Layout</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">The RPG program reads a fixed-width text file. Each record is 83 bytes. Map every field by its exact byte position (1-based): field name, start/end byte, RPG data type, Java equivalent, and any gotchas. Pay special attention to the unit price field — stored as 8-digit integer with 2 implied decimal places (e.g. 00124999 = $1,249.99).<br><br>
+[PASTE INVENTORY-DATA.txt HERE]</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — RPG Overview &amp; Phase 1</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 20b — PROMPTS 2 & 3
+════════════════════════════════════════════════════ -->
+<div class="slide slide-topic" id="s20b">
+  <div class="slide-header" style="background:#9f1853">
+    <div>
+      <div class="slide-tag">Topic 09 · 2 of 5</div>
+      <div class="slide-title" style="margin-top:4px">Prompts 2 &amp; 3 — Data Model &amp; File Reader</div>
+    </div>
+    <div class="slide-time">⏱ 15 min · Hands-on</div>
+  </div>
+  <div class="slide-body two-col">
+    <div>
+      <div class="section-label">Prompt 2 — Java data model &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
+      <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
+        <span class="callout-icon">💡</span>
+        <span><strong>Why use it:</strong> Converts the RPG data structure into a Java class — foundation everything else builds on.</span>
+      </div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:12px;color:#161616;line-height:1.8">Convert the RPG inventory data structure into a Java class called InventoryRecord.<br>
+Use these type mappings: packed decimal → BigDecimal, integer → int, indicator → boolean, character → String.<br>
+Add three computed fields:<br>
+- lineValue = quantity × unitPrice<br>
+- lowStock = quantity &lt;= reorderPoint (keep &lt;=, do not change to &lt;)<br>
+- statusDescription = "Active" if A, "Discontinued" if D, "Unknown" otherwise.<br>
+Add getters and setters. No file-reading logic yet — just the model class.</p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Prompt 3 — File reader service &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
       <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
         <span class="callout-icon">💡</span>
         <span><strong>Why use it:</strong> Reads the flat data file and converts each line into an InventoryRecord — replaces the RPG read loop.</span>
@@ -3048,7 +3130,7 @@ Important rules from the original RPG program:<br>
   </div>
   <div class="slide-body two-col">
     <div>
-      <div class="section-label">Prompt 4 — Compute summary statistics &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
+      <div class="section-label">Prompt 4 — Summary statistics &nbsp;<span style="background:#ffd7d9;color:#da1e28;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px">REQUIRED</span></div>
       <div class="callout callout-info" style="margin-bottom:8px;font-size:12px">
         <span class="callout-icon">💡</span>
         <span><strong>Why use it:</strong> Reproduces the RPG printSummary procedure — counts, totals, and averages shown at the bottom of the report.</span>
@@ -3117,16 +3199,12 @@ Use plain HTML, CSS, and vanilla JavaScript only — no React, no jQuery.</p>
       <div class="section-label">What you get after Prompt 6</div>
       <table style="margin-bottom:14px">
         <tr><th>URL</th><th>What opens</th></tr>
-        <tr><td><code>http://localhost:8080/</code></td><td>The full inventory report with KPI cards, filters, and table</td></tr>
+        <tr><td><code>http://localhost:8080/</code></td><td>Full inventory report with KPI cards, filters, and table</td></tr>
         <tr><td><code>http://localhost:8080/api/report</code></td><td>Summary statistics as raw JSON</td></tr>
       </table>
       <div class="section-label">The one command to run</div>
       <pre>mvn spring-boot:run</pre>
-      <p style="font-size:13px;color:#393939;margin-top:10px;line-height:1.6">
-        Wait for <code>Started InventoryApplication</code> in the terminal output,
-        then open the browser URL above.
-        Press <strong>Ctrl+C</strong> to stop.
-      </p>
+      <p style="font-size:13px;color:#393939;margin-top:10px;line-height:1.6">Wait for <code>Started InventoryApplication</code>, then open the browser URL. Press <strong>Ctrl+C</strong> to stop.</p>
       <div class="section-label" style="margin-top:14px">Optional extras you can skip</div>
       <table>
         <tr><th>Prompt</th><th>What it adds</th></tr>
@@ -3178,6 +3256,184 @@ Use plain HTML, CSS, and vanilla JavaScript only — no React, no jQuery.</p>
     <div class="card card-blue" style="grid-column: 1 / -1; border-left-color: var(--ibm-red);">
       <div class="card-title">7 · BOB cannot start servers — run the final command yourself</div>
       <p>After Prompt 6, open a terminal and run <code>mvn spring-boot:run</code>. Wait for <em>"Started InventoryApplication"</em>, then open <strong>http://localhost:8080</strong> in your browser.</p>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — 7 Golden Rules</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 21 — SECTION DIVIDER: PLAN & IMPLEMENT
+════════════════════════════════════════════════════ -->
+<div class="slide slide-section-divider" id="s21"
+     style="background: linear-gradient(135deg, #0f62fe 0%, #0043ce 100%);">
+
+  <div class="slide-body two-col">
+    <div>
+      <div class="section-label">Prompt 3 — Data Model (InventoryRecord POJO)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:12px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Convert the RPG data structure dcl-ds InventoryRec into a Java POJO class called InventoryRecord.<br>
+Rules: packed(8:2) → BigDecimal, int(10) → int, ind → boolean, char(N) → String.<br>
+Add computed fields: lineValue (quantity × unitPrice), lowStock (quantity &lt;= reorderPoint), statusDescription ("Active", "Discontinued", or "Unknown").<br>
+Add standard getters and setters. Do NOT add any parsing logic yet — just the model class.<br><br>
+[PASTE dcl-s variable declarations HERE]</p>
+      </div>
+      <div class="section-label">Prompt 4 — Service Layer (File Parsing + Business Logic)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Create a Java Spring @Service called InventoryService that reads INVENTORY-DATA.txt from the classpath using BufferedReader. Parse each 83-byte fixed-width record using these exact 0-based positions: productId(0,6), productName(6,36), category(36,56), quantity(56,62), reorderPoint(62,68), unitPrice(68,76)÷100 as BigDecimal, status(76,77).<br>
+Reproduce: checkLowStock() using quantity &lt;= reorderPoint; status "A"→"Active", "D"→"Discontinued", else "Unknown"; lineValue = unitPrice × quantity.<br>
+Do NOT change &lt;= to &lt; — the original RPG uses &lt;= and that must be preserved exactly.</p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Prompt 5 — Summary Statistics (printSummary procedure)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:12px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Create a Java class InventorySummary that computes the same statistics as the RPG printSummary() procedure given a List&lt;InventoryRecord&gt;: totalProducts, activeProducts, discontinuedProducts, lowStockAlerts, outOfStockItems, totalQuantity, totalInventoryValue, activeInventoryValue, averageUnitPrice, averageQuantity.<br><br>
+Expected values to verify against: Total=16, Active=13, Discontinued=3, LowStock=10, OutOfStock=2, TotalQty=1087, TotalValue=$75,323.13, ActiveValue=$71,293.39.</p>
+      </div>
+      <div class="section-label">Prompt 6 — Web Layer (Controller + Thymeleaf)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Create a Spring Boot @Controller: GET / renders Thymeleaf "report" template with allRecords + summary; GET /api/report returns InventorySummary as JSON.<br>
+HTML: 8 KPI cards, filter bar (All/Active/Discontinued/Low Stock/Out of Stock + per-category buttons), product table with sortable columns, amber rows for low stock, red for out of stock. All filtering via vanilla JavaScript — no React, no jQuery, no page reload.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — Phase 2: Convert</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 20c — PHASE 3: VERIFY & PHASE 4: REFINE
+════════════════════════════════════════════════════ -->
+<div class="slide slide-topic" id="s20c">
+  <div class="slide-header" style="background:#9f1853">
+    <div>
+      <div class="slide-tag">Topic 09 · 3 of 5</div>
+      <div class="slide-title" style="margin-top:4px">Phase 3 — Verify &amp; Phase 4 — Refine</div>
+    </div>
+    <div class="slide-time">⏱ 15 min · Hands-on</div>
+  </div>
+  <div class="slide-body two-col">
+    <div>
+      <div class="section-label">Prompt 7 — Unit Tests (JUnit 5)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:12px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Write JUnit 5 unit tests for InventoryService and InventorySummary that verify the Java output matches the original RPG sample-output.txt exactly.<br>
+Assert: 16 records loaded; 10 low stock; 2 out of stock; Active=13, Discontinued=3; totalValue=75323.13; activeValue=71293.39; totalQty=1087.<br>
+Also verify: Product 100001 price=1249.99, qty=25, lowStock=true; Product 300001 price=5.99, qty=450, lowStock=false; Product 200002 qty=0, lowStock=true.</p>
+      </div>
+      <div class="section-label">Prompt 8 — Explain Discrepancies</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Compare the Java InventoryService output against the original RPG sample-output.txt line by line. For every product check: unit price (stored as integer cents), line value (qty × price), low stock flag (qty &lt;= reorderPoint), status description. For any discrepancy explain: which product, what RPG produces vs Java, what caused it, and how to fix it.<br><br>
+[PASTE sample-output.txt HERE]<br>
+[PASTE Java output or test failure HERE]</p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Prompt 9 — Replace Flat File with PostgreSQL</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:12px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Migrate INVENTORY-DATA.txt to PostgreSQL. Generate three things:<br>
+1. CREATE TABLE SQL: table=inventory, columns matching RPG layout, unit_price as DECIMAL(8,2), primary key on product_id.<br>
+2. Spring Data JPA @Entity class InventoryItem mapping to this table.<br>
+3. Spring @Component InventoryDataLoader — runs once on startup via @EventListener(ApplicationReadyEvent.class), reads INVENTORY-DATA.txt, inserts all 16 records, skips if table already has rows.<br>
+Keep InventoryService working unchanged — just swap data source to JPA repository.</p>
+      </div>
+      <div class="section-label">Prompt 10 — Add REST API</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Add a @RestController InventoryApiController with endpoints: GET /api/products (all), GET /api/products/{id} (single, 404 if not found), GET /api/products?status=A (filtered), GET /api/products?lowStock=true (filtered), GET /api/summary (stats as JSON). JSON fields in camelCase. Do NOT add authentication — this is an internal tool.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — Phase 3: Verify &amp; Phase 4: Refine</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 20d — PHASE 5: DEPLOY & MASTER PROMPT
+════════════════════════════════════════════════════ -->
+<div class="slide slide-topic" id="s20d">
+  <div class="slide-header" style="background:#9f1853">
+    <div>
+      <div class="slide-tag">Topic 09 · 4 of 5</div>
+      <div class="slide-title" style="margin-top:4px">Phase 5 — Deploy &amp; Master Prompt</div>
+    </div>
+    <div class="slide-time">⏱ 15 min · Hands-on</div>
+  </div>
+  <div class="slide-body two-col">
+    <div>
+      <div class="section-label">Prompt 11 — Containerise with Docker</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4;margin-bottom:12px">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Write a Dockerfile using a multi-stage build.<br>
+Stage 1 — Build: base=eclipse-temurin:17-jdk, copy pom.xml + src/, run mvn clean package -q -DskipTests.<br>
+Stage 2 — Runtime: base=eclipse-temurin:17-jre, copy only the JAR from Stage 1, expose port 8080, ENTRYPOINT to run the JAR.<br>
+Also write docker-compose.yml: Spring Boot app on port 8080, restart: unless-stopped, no volumes. Final image should be under 300 MB.</p>
+      </div>
+      <div class="section-label">Prompt 12 — The Master Prompt (Full Conversion in One Shot)</div>
+      <div class="card" style="border-left:4px solid #9f1853;background:#f4f4f4">
+        <p style="font-family:monospace;font-size:11px;color:#161616;line-height:1.7">Modernise INVREPORT RPG IV → Java Spring Boot. Tech stack: Java 17, Spring Boot 3.2, Maven, Thymeleaf, no external CSS frameworks.<br>
+Files: pom.xml, InventoryApplication.java, model/InventoryRecord.java, model/InventorySummary.java, service/InventoryService.java, controller/InventoryController.java, templates/report.html, INVENTORY-DATA.txt.<br>
+Business rules: lowStock = qty &lt;= reorderPoint (not &lt;); status "A"=Active, "D"=Discontinued; unitPrice = integer÷100; lineValue = qty × price.<br>
+Expected: 16 products, 13 active, 3 discontinued, 10 low stock, 2 out of stock, total=$75,323.13, active=$71,293.39.<br><br>
+[PASTE INVREPORT.rpgle · INVENTORY-DATA.txt · sample-output.txt]</p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">When to Use the Master Prompt</div>
+      <div class="callout callout-info" style="margin-bottom:14px">
+        <span class="callout-icon">💡</span>
+        <span>Use Prompt 12 as your <strong>starting prompt in a fresh BOB session</strong> with no prior context. It gives everything needed in one message — stack, structure, rules, and golden values to verify against.</span>
+      </div>
+      <div class="section-label">Key Rules</div>
+      <table>
+        <tr><th>Rule</th><th>Why It Matters</th></tr>
+        <tr><td>Paste full source</td><td>Never summarise — AI needs every dcl-s and edge case</td></tr>
+        <tr><td>Include golden output</td><td>sample-output.txt is your test oracle</td></tr>
+        <tr><td>Name business rules explicitly</td><td>State <code>&lt;=</code> not <code>&lt;</code> — AI may "fix" what it thinks is a bug</td></tr>
+        <tr><td>Explain before coding</td><td>Hidden rules surface in explanation, not in code</td></tr>
+        <tr><td>Say what you don't want</td><td>"No React", "no auth" — AI over-engineers unless you set limits</td></tr>
+        <tr><td>Migrate in layers</td><td>Model → Service → Controller → View, each independently testable</td></tr>
+        <tr><td>Verify with numbers</td><td>If totals match, migration is correct</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — Phase 5: Deploy &amp; Master Prompt</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SLIDE 20e — 7 GOLDEN RULES
+════════════════════════════════════════════════════ -->
+<div class="slide slide-topic" id="s20e">
+  <div class="slide-header" style="background:#9f1853">
+    <div>
+      <div class="slide-tag">Topic 09 · 5 of 5</div>
+      <div class="slide-title" style="margin-top:4px">The 7 Golden Rules of Legacy Modernization Prompting</div>
+    </div>
+    <div class="slide-time">⏱ 15 min · Hands-on</div>
+  </div>
+  <div class="slide-body three-col">
+    <div class="card card-red">
+      <div class="card-title">1 · Always paste the full source</div>
+      <p>Never summarise the RPG code — paste it whole. The AI needs to see every dcl-s, every procedure, every edge case.</p>
+    </div>
+    <div class="card card-yellow">
+      <div class="card-title">2 · Include the data file and expected output</div>
+      <p>sample-output.txt is your test oracle. Without it, you can't verify the Java is correct.</p>
+    </div>
+    <div class="card card-blue">
+      <div class="card-title">3 · Name the business rules explicitly</div>
+      <p>State: "low stock is quantity &lt;= reorderPoint — do not change this to &lt;". The AI may "fix" what it thinks is a bug.</p>
+    </div>
+    <div class="card card-purple">
+      <div class="card-title">4 · Ask it to explain before it codes</div>
+      <p>Use a "Phase 1" prompt first. Hidden business rules surface in the explanation, not in the generated code.</p>
+    </div>
+    <div class="card card-teal">
+      <div class="card-title">5 · Say what you do NOT want</div>
+      <p>"No React", "no authentication", "no external CSS frameworks" — AI assistants over-engineer unless you set boundaries.</p>
+    </div>
+    <div class="card card-green">
+      <div class="card-title">6 · Migrate in layers, not all at once</div>
+      <p>Model → Service → Controller → View. Each layer is easier to review and test independently.</p>
+    </div>
+    <div class="card card-blue" style="grid-column: 1 / -1; border-left-color: var(--ibm-red);">
+      <div class="card-title">7 · Verify with numbers</div>
+      <p>Run the Java output against sample-output.txt. If totals match, the migration is correct. If not, ask the AI to <strong>explain the discrepancy before fixing it</strong>.</p>
     </div>
   </div>
   <div class="slide-footer">IBM BOB Training · Capgemini <span>Topic 09 — 7 Golden Rules</span></div>
